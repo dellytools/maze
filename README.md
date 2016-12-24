@@ -1,4 +1,7 @@
 # maze: match visualizer
+
+![maze](maze.png)
+
 In a similar manner to
 [dot plots](http://en.wikipedia.org/wiki/Dot_plot_%28bioinformatics%29),
 `maze` highlights local sequence similarity between two DNA sequences.
