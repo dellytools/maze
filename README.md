@@ -1,8 +1,6 @@
 # maze: match visualizer
 
-<p align="center">
-  <img src="maze.png" alt="maze" width="600">
-</p>
+![maze screenshot](maze.png)
 
 In a similar manner to
 [dot plots](http://en.wikipedia.org/wiki/Dot_plot_%28bioinformatics%29),
