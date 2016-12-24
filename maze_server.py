@@ -1,7 +1,5 @@
 #! /usr/bin/env python
 
-# 2014-2015 Markus Hsi-Yang Fritz
-
 from __future__ import print_function, division
 import click
 from flask import Flask, render_template, request, make_response

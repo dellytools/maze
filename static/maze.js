@@ -1,23 +1,9 @@
-// 2014-2015 Markus Hsi-Yang Fritz
-
 var maze = function () {
   var my = {};
 
   my.data = null;
 
   my.main = function (selector) {
-    $('#footer-icon').click(function () {
-      var revealing = parseInt($('footer').css('bottom')) < 0;
-      $('footer').animate({
-        bottom: revealing
-                ? 0
-                : -1 * parseInt($('footer').css('height'))
-      }, 800, function () {
-        $('#footer-icon').toggleClass('fa-chevron-circle-up');
-        $('#footer-icon').toggleClass('fa-chevron-circle-down');
-      });
-    }); 
-
     // remove focus after being clicked
     $('.button-header').focus(function () {
       this.blur();

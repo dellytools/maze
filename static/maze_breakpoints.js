@@ -1,6 +1,3 @@
-// 2014-2015 Markus Hsi-Yang Fritz and Sascha Meiers
-
-
 // Todo(meiers): Remember to reset network.http.use-cache in Firefox after devlopment
 
 var maze_detail = function () {
