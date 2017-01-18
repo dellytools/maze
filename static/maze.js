@@ -181,24 +181,27 @@ var maze = function () {
     $('#control-btn-right').removeClass('hide');
     $('#control-btn-right').off('click');
     $('#control-btn-left').off('click');
+    Mousetrap.unbind('left');
+    Mousetrap.unbind('right');
 
     if (dataIdx > 0) {
       $('#control-btn-left').removeClass('disabled');
-      $('#control-btn-left:not(disabled)').click(function () {
-        my.vis(selector, dataIdx-1);
-      });
+      function eventLeft() {my.vis(selector, dataIdx-1)};
+      $('#control-btn-left:not(disabled)').click(eventLeft);
+      Mousetrap.bind('left', eventLeft);
     } else {
       $('#control-btn-left').addClass('disabled');
     }
 
     if (dataIdx < my.data.length - 1) {
       $('#control-btn-right').removeClass('disabled');
-      $('#control-btn-right:not(disabled)').click(function () {
-        my.vis(selector, dataIdx+1);
-      });
+      function eventRight() {my.vis(selector, dataIdx+1)};
+      $('#control-btn-right:not(disabled)').click(eventRight);
+      Mousetrap.bind('right', eventRight);
     } else {
       $('#control-btn-right').addClass('disabled');
     }
+
 
     if ($('#checkbox-scale').prop('checked')) {
       my.outerWidth = Math.min($(window).width(),
