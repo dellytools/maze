@@ -181,3 +181,9 @@ pre span {
   padding:0px;
   background-color:rgba(255,131,0, 0.3);
 }
+
+/* List of matches */
+
+#match-wrap button.pull-left {
+  margin-right:10px;
+}
