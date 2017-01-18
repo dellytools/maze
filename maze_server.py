@@ -15,6 +15,8 @@ import re
 
 app = Flask(__name__)
 cfg = {}
+absPath = os.path.dirname(os.path.abspath(inspect.stack()[0][1]))
+
 
 @app.route('/')
 def index():
@@ -84,12 +86,13 @@ def compute_breakpoints():
     query = json.loads(args['query'])
     return maze_breakpoints.breakpoints(ref, query)
 
+
 @app.route('/save', methods=['POST'])
 def save_svg():
     svg_xml = request.form['content']
     # include CSS into SVG
     embed_css = '<defs><style type="text/css"><![CDATA[ '
-    with open('static/maze.css') as f_css:
+    with open(os.path.join(absPath, 'static/maze.css')) as f_css:
         for line in f_css:
             embed_css += line.strip() + ' '
     embed_css += ']]></style></defs>'
@@ -100,18 +103,20 @@ def save_svg():
     response.headers['Content-Type'] = 'image/svg+xml' # response.headers['Cache-Control'] = 'no-cache' # ?
     return response
 
+
 @click.command()
+@click.option('-h', '--host', default='127.0.0.1', help='host IP')
 @click.option('-p', '--port', default=5000, help='port number')
 @click.option('--debug/--no-debug', default=False,
               help='run server in debug mode')
 # Todo(meiers): revisit the --coords option
-@click.option('-c', '--coords', help='reference coordinates BED file')
-def cli(port, debug, coords):
+# @click.option('-c', '--coords', help='reference coordinates BED file')
+def cli(host, port, debug):
     global cfg
     cfg = {
         'debug': debug
     }
-    app.run(port=port, debug=debug)
+    app.run(host=host, port=port, debug=debug)
 
 if __name__ == '__main__':
     cli()
