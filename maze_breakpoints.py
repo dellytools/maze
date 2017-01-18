@@ -126,7 +126,7 @@ def _transform_coords(match):
 def LASTsplit_breakpoints(ref, seq, matches, W=40, V=20): # matches must be sorted by query
     breakpoints = []
     for m1,m2 in zip(matches, matches[1:]):
-        just = 16
+        just = 18
         print_qu_coords =   (m1['q2'] if m1['strand']=='+' else len(seq) - m1['q1'],\
                             (m2['q1'] if m2['strand']=='+' else len(seq) - m2['q2'])+1)
 
