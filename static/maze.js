@@ -188,30 +188,40 @@ var maze = function () {
 
       });
 
+    
     // tick button: select a sequence
-    $('#control-btn-select-seq').tooltip('hide');
-    if ('selected' in my.query[dataIdx] && my.query[dataIdx].selected) {
-      $('#control-btn-select-seq').attr('title', "This sequence is selected").tooltip('fixTitle').find('span').removeClass('glyphicon-ok-circle').addClass('glyphicon-ok-sign');
-    } else {
-      $('#control-btn-select-seq').attr('title', "Select this query sequence").tooltip('fixTitle').find('span').addClass('glyphicon-ok-circle').removeClass('glyphicon-ok-sign');
+    function seq_select() {
+      $('#control-btn-select-seq').find('span').removeClass('glyphicon-ok-circle').addClass('glyphicon-ok-sign');
+      $('#control-btn-select-seq').attr('title', "Sequence selected").tooltip('fixTitle');
+      my.query[dataIdx].selected = true;
     }
-    $('#control-btn-select-seq').off('click').click(function() {
-      if (!('selected' in my.query[dataIdx])) {
-          my.query[dataIdx].selected = true;
-          $(this).attr('title', "This sequence is selected").tooltip('fixTitle').tooltip('show');
+    function seq_unselect() {
+      $('#control-btn-select-seq').find('span').removeClass('glyphicon-ok-sign').addClass('glyphicon-ok-circle');
+      $('#control-btn-select-seq').attr('title', "Select this query sequence").tooltip('fixTitle');
+      my.query[dataIdx].selected = false;
+    }
+    function seq_toggle() { // on click or key event
+      if ('selected' in my.query[dataIdx] && my.query[dataIdx].selected) {
+        seq_unselect();
       } else {
-          if (my.query[dataIdx].selected) {
-            my.query[dataIdx].selected = false;
-            $(this).attr('title', "Select this query sequence").tooltip('fixTitle').tooltip('show');
-          } else {
-            my.query[dataIdx].selected = true;
-            $(this).attr('title', "This sequence is selected").tooltip('fixTitle').tooltip('show');
-          }
+        seq_select();
       }
       updateDownloadButton(my.query, $('#control-btn-download-seqs'));
-      $(this).find('span').toggleClass('glyphicon-ok-circle').toggleClass('glyphicon-ok-sign');
-    });
-    $('#control-btn-select-seq').removeClass('hide').tooltip();
+      $('#control-btn-select-seq').tooltip('show');
+    }
+    // set current state of the button
+    $('#control-btn-select-seq').tooltip('hide');
+    if ('selected' in my.query[dataIdx] && my.query[dataIdx].selected) {
+      seq_select();
+    } else {
+      seq_unselect();
+    }
+    // Add click handler
+    $('#control-btn-select-seq').off('click').click(seq_toggle);
+    // Add shortcut key
+    Mousetrap.bind('up', seq_toggle);
+    // eventually, show button
+    $('#control-btn-select-seq').prop('disabled', false).removeClass('hide').tooltip();
 
 
     // control (left/right) buttons
@@ -415,7 +425,6 @@ function updateDownloadButton(queries, showNumber_selector) {
   for (x=0; x<queries.length; ++x) {
     if ('selected' in queries[x] && queries[x].selected) count++;
   }
-  console.log(count);
   showNumber_selector.find('span').first().html(count);
   if(count>0) {
     showNumber_selector.prop('disabled', false).tooltip();
