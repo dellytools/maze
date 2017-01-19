@@ -11,7 +11,7 @@ from readfq import readfq
 import maze
 import maze_breakpoints
 import re
-
+import inspect
 
 app = Flask(__name__)
 cfg = {}
