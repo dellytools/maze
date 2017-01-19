@@ -121,6 +121,21 @@ var maze = function () {
       }
     }
 
+    // header button: download selected sequences
+    $('#control-btn-download-seqs').off('click').click(function() {
+      out_text = '';
+      for (x=0; x<my.query.length; ++x) {
+        q = my.query[x]
+        if ('selected' in q && q.selected) {
+          out_text += ">" + q.name + "\n";
+          for (i=0; i< q.seq.length; i+=60) {
+            out_text += q.seq.slice(i, Math.min(q.seq.length, i+60)) + "\n";
+          }
+        }
+      }
+      downloadAsFile('selection.fa', out_text);
+    });
+
     $('#visualize').click(function () {
       $('#config-modal').modal('hide');
       $(selector).empty();
@@ -153,7 +168,7 @@ var maze = function () {
 
     $(selector).empty();
 
-    // header button: Breakpoints
+    // header button: breakpoints
     $('#control-btn-breakpoints').prop('disabled', false).off('click');
     $('#control-btn-breakpoints').click(function () {
         console.log('open new window for ' + dataIdx)
@@ -407,4 +422,21 @@ function updateDownloadButton(queries, showNumber_selector) {
   } else {
     showNumber_selector.prop('disabled', true);
   }
+}
+
+
+// Credit: http://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
+function downloadAsFile(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
 }
