@@ -8,8 +8,8 @@ var maze = function () {
     $('.button-header').focus(function () {
       this.blur();
     });
-
-    $('#control-btn-save, #control-btn-breakpoints').prop('disabled', true);
+    // disable header buttons
+    $('#control-btn-screenshot, #control-btn-breakpoints, #control-btn-download-seqs').prop('disabled', true);
 
     $('#match-info').click(function () {
       $('#matches-info').toggleClass('hide');
@@ -153,19 +153,17 @@ var maze = function () {
 
     $(selector).empty();
 
-    // header buttons
-    $('#control-btn-breakpoints').prop('disabled', false);
-    $('#control-btn-breakpoints').off('click');
+    // header button: Breakpoints
+    $('#control-btn-breakpoints').prop('disabled', false).off('click');
     $('#control-btn-breakpoints').click(function () {
         console.log('open new window for ' + dataIdx)
         var wnd = window.open("breakpoints");
         wnd.transferData = { data: data, query: my.query[dataIdx], ref: my.ref[refIdx]}; 
       });
 
-    $('#control-btn-save').prop('disabled', false);
-    $('#control-btn-save').off('click');
-    $('#control-btn-save').tooltip();
-    $('#control-btn-save').click(function () {
+    // header button: screenshot
+    $('#control-btn-screenshot').prop('disabled', false).off('click').tooltip();
+    $('#control-btn-screenshot').click(function () {
         // Extract the data as SVG text string
         var svg_elem =  document.getElementsByTagName("svg")[0];
         var svg_xml = (new XMLSerializer).serializeToString(svg_elem);
@@ -174,6 +172,31 @@ var maze = function () {
         form.submit();
 
       });
+
+    // tick button: select a sequence
+    $('#control-btn-select-seq').tooltip('hide');
+    if ('selected' in my.query[dataIdx] && my.query[dataIdx].selected) {
+      $('#control-btn-select-seq').attr('title', "This sequence is selected").tooltip('fixTitle').find('span').removeClass('glyphicon-ok-circle').addClass('glyphicon-ok-sign');
+    } else {
+      $('#control-btn-select-seq').attr('title', "Select this query sequence").tooltip('fixTitle').find('span').addClass('glyphicon-ok-circle').removeClass('glyphicon-ok-sign');
+    }
+    $('#control-btn-select-seq').off('click').click(function() {
+      if (!('selected' in my.query[dataIdx])) {
+          my.query[dataIdx].selected = true;
+          $(this).attr('title', "This sequence is selected").tooltip('fixTitle').tooltip('show');
+      } else {
+          if (my.query[dataIdx].selected) {
+            my.query[dataIdx].selected = false;
+            $(this).attr('title', "Select this query sequence").tooltip('fixTitle').tooltip('show');
+          } else {
+            my.query[dataIdx].selected = true;
+            $(this).attr('title', "This sequence is selected").tooltip('fixTitle').tooltip('show');
+          }
+      }
+      updateDownloadButton(my.query, $('#control-btn-download-seqs'));
+      $(this).find('span').toggleClass('glyphicon-ok-circle').toggleClass('glyphicon-ok-sign');
+    });
+    $('#control-btn-select-seq').removeClass('hide').tooltip();
 
 
     // control (left/right) buttons
@@ -192,7 +215,6 @@ var maze = function () {
     } else {
       $('#control-btn-left').addClass('disabled');
     }
-
     if (dataIdx < my.data.length - 1) {
       $('#control-btn-right').removeClass('disabled');
       function eventRight() {my.vis(selector, dataIdx+1)};
@@ -371,4 +393,18 @@ function parseFastaString(s) {
   }
 
   return seqs;
+}
+
+function updateDownloadButton(queries, showNumber_selector) {
+  var count = 0;
+  for (x=0; x<queries.length; ++x) {
+    if ('selected' in queries[x] && queries[x].selected) count++;
+  }
+  console.log(count);
+  showNumber_selector.find('span').first().html(count);
+  if(count>0) {
+    showNumber_selector.prop('disabled', false).tooltip();
+  } else {
+    showNumber_selector.prop('disabled', true);
+  }
 }

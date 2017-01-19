@@ -16,9 +16,9 @@
         <span class="glyphicon glyphicon-menu-hamburger"></span>
         setup
       </button>
-      <button id="control-btn-save" type="button" class="pull-right button-header" 
-              data-toggle="tooltip" data-original-title="Save as SVG" data-placement="bottom">
-        <span class="glyphicon glyphicon-save"></span>
+      <button id="control-btn-screenshot" type="button" class="pull-right button-header" 
+              data-toggle="tooltip" title="Save as SVG" data-placement="bottom">
+        <span class="glyphicon glyphicon glyphicon-camera"></span>
       </button>
           <form id="form-save" method="post" action="/save">
            <input type="hidden" name="content" value="">
@@ -26,6 +26,10 @@
       <button id="control-btn-breakpoints" type="button" class="pull-right button-header">
         breakpoints
         <span class="glyphicon glyphicon-new-window"></span>
+      </button>
+      <button id="control-btn-download-seqs" type="button" class="pull-right button-header"
+              data-toggle="tooltip" title="Download selected sequences" data-placement="bottom">
+        <span>0</span> <span class="glyphicon glyphicon glyphicon-save-file"></span>
       </button>
 
       <div class="header-title">maze</div>
@@ -106,6 +110,11 @@
     <span id="vis"></span>
     <button id="control-btn-right" type="button" class="btn btn-default hide control-btn">
       <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+    <!-- Button to select this query -->
+    <button id="control-btn-select-seq" type="button" class="btn btn-default hide control-btn"
+            data-toggle="tooltip" title="Select this query sequence" data-placement="top" data-container="body">
+      <span class="glyphicon"></span>
     </button>
   </div>
 
