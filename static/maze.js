@@ -141,7 +141,8 @@ var maze = function () {
       $(selector).empty();
       $('#control-btn-left').addClass('hide');
       $('#control-btn-right').addClass('hide');
-      $('.spinner').toggleClass('hide');
+      $('#control-btn-select-seq').addClass('hide');
+      $('.spinner').removeClass('hide');
 
       var matches = $('#config-matches label.active').text().trim();
       var length = $('#config-length').val();
@@ -152,11 +153,15 @@ var maze = function () {
           'ref': JSON.stringify(my.ref),
           'query': JSON.stringify(my.query)
         }, function (res) {
-          $('.spinner').toggleClass('hide');
           my.data = res;
+          $('.spinner').addClass('hide');
           my.vis(selector, 0);
         }, 'json'
       );
+      // use "visualize" button also to reset selected sequences
+      // can be done independent of when matches arrive
+      for (x in my.query) { if ('selected' in my.query[x]) {delete my.query[x].selected} }
+      updateDownloadButton(my.query, $('#control-btn-download-seqs'));
     });
   };
 
