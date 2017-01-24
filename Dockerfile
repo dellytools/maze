@@ -27,7 +27,7 @@ RUN apt-get update \
         python-pip \
         git \
     && cd /opt \
-    && git clone https://github.com/meiers/svvis \
+    && git clone https://github.com/dellytools/maze.git \
     && cd /opt/svvis \
     && rm -rf suave \
     && cat maze/requirements/python2.7.txt | xargs pip install \
